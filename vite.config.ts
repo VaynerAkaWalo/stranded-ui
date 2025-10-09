@@ -12,4 +12,10 @@ export default defineConfig({
       '@components': path.resolve(__dirname, './src/components')
     }
   },
+
+  server: {
+    host: '127.0.0.1',
+    allowedHosts: ['stranded.blamedevs.local'],
+    port: 3000,
+  }
 })

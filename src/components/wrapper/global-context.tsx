@@ -2,7 +2,7 @@ import * as React from "react";
 
 export interface GlobalContextInterface {
   userId: string
-  userName: string
+  username: string
   isLoading: boolean
 }
 

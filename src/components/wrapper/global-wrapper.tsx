@@ -26,7 +26,7 @@ export default function GlobalWrapper({ children }: WrapperProps) {
 
   const context: GlobalContextInterface = {
     userId: user?.id ?? '',
-    userName: user?.name ?? '',
+    username: user?.name ?? '',
     isLoading
   }
 

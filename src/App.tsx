@@ -22,12 +22,10 @@ export default App
 
 
 function Container() {
-  const { userName } = useContext(GlobalContext)
-
   return (
     <>
       <div className="h-screen">
-        <ProfileView name={userName}/>
+        <ProfileView/>
       </div>
       <Footer/>
     </>

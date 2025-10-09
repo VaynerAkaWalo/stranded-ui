@@ -1,15 +1,14 @@
+import {useContext} from "react";
+import {GlobalContext} from "@components/wrapper/global-context.tsx";
 
+export default function ProfileView() {
+  const { username } = useContext(GlobalContext)
 
-interface ProfileProps {
-  name: string
-}
-
-export default function ProfileView({name}: ProfileProps) {
   return (
-    <div className="border-2 w-1/4 h-1/4 m-10 p-8">
-      <p>Name: {name}</p>
-      <p>Level: {0}</p>
-      <p>Gold: {100}</p>
+    <div className="h-12 border-b-2 flex justify-center items-center gap-10">
+      <p>name: {username}</p>
+      <p>level: {0}</p>
+      <p>gold: {0}</p>
     </div>
   )
 }

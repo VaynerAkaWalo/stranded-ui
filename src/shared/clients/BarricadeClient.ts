@@ -19,6 +19,12 @@ class BarricadeClient {
       withCredentials: true
     })
   }
+
+  public logout = async (): Promise<AxiosPromise<void>> => {
+    return HTTPClient.post(this.baseUrl + "/v1/logout", {}, {
+      withCredentials: true
+    })
+  }
 }
 
 export const AuthenticationClient = new BarricadeClient();

@@ -6,8 +6,8 @@ class Client {
     return axios.get(url, config)
   }
 
-  public post = async <T=never>(url: string, request: T): Promise<never> => {
-    return axios.post(url, request)
+  public post = async <T=never>(url: string, request?: T, config?: AxiosRequestConfig): Promise<never> => {
+    return axios.post(url, request, config)
   }
 }
 

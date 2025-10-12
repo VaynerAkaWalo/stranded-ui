@@ -17,5 +17,11 @@ export default defineConfig({
     host: '127.0.0.1',
     allowedHosts: ['stranded.blamedevs.local'],
     port: 3000,
+    proxy: {
+      '/api/v1/': {
+        target: 'http://localhost:8787',
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
   }
 })

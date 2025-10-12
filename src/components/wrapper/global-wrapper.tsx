@@ -2,6 +2,7 @@ import {type ReactNode, useEffect, useState} from "react";
 import {GlobalContext, type GlobalContextInterface} from "@components/wrapper/global-context.tsx";
 import {AuthenticationClient, type Identity} from "@shared/clients/BarricadeClient.ts";
 import {authPath} from "@shared/path-utils.ts";
+import {type Profile, StrandedClient} from "@shared/clients/WilsonClient.ts";
 
 interface WrapperProps {
   children: ReactNode
@@ -9,6 +10,7 @@ interface WrapperProps {
 
 export default function GlobalWrapper({ children }: WrapperProps) {
   const [user, setUser] = useState<Identity | null>()
+  const [profile, setProfile] = useState<Profile | undefined>()
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useEffect(() => {
@@ -16,17 +18,35 @@ export default function GlobalWrapper({ children }: WrapperProps) {
       try {
         const { data } = await AuthenticationClient.getIdentity()
         setUser(data)
-        setIsLoading(false)
       } catch {
         window.location.replace(authPath() + "/login?target=" + window.location.toString())
       }
     }
-    ensureLoggedIn()
+
+    const loadProfile = async () => {
+      const { data: profiles } = await StrandedClient.GetProfiles()
+      if (profiles.length != 0) {
+        setProfile(profiles[0])
+      }
+    }
+
+    const keepalive = () => {
+      setInterval(() => {
+        ensureLoggedIn()
+      }, 10000)
+    }
+    ensureLoggedIn().then(() => {
+      loadProfile().then(() => {
+        setIsLoading(false)
+      })
+    })
+    keepalive()
   },[]);
 
   const context: GlobalContextInterface = {
     userId: user?.id ?? '',
     username: user?.name ?? '',
+    profile,
     isLoading
   }
 

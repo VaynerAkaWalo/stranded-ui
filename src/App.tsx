@@ -5,6 +5,8 @@ import LoadingPage from "@components/wrapper/loading-page.tsx";
 import {GlobalContext} from "@components/wrapper/global-context.tsx";
 import CreateProfile from "@components/profile/create-profile.tsx";
 import {createTheme, ThemeProvider} from "@mui/material";
+import EventFeed from "@components/event/EventFeed.tsx";
+import ActionProgress from "@components/action/action-progress.tsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -39,6 +41,8 @@ function Container() {
   return (
     <div className="h-screen">
       <ProfileView/>
+      <ActionProgress/>
+      <EventFeed/>
     </div>
   )
 }

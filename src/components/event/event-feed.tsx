@@ -5,11 +5,9 @@ import {ActionContext} from "@components/action/action-context.tsx";
 
 interface Event {
   id: string,
-  player: string,
-  location: string,
-  goldReward: number
-  expReward: number
-  date: string
+  gold: number
+  exp: number
+  date: number
 }
 
 export default function EventFeed() {
@@ -19,9 +17,8 @@ export default function EventFeed() {
 
   useEffect(() => {
     const eventListener = new EventSource("/api/v1/profiles/" + profile?.id + "/events")
-    eventListener.addEventListener("action-reward", (rawEvent: MessageEvent) => {
+    eventListener.addEventListener("action", (rawEvent: MessageEvent) => {
       const event: Event = JSON.parse(rawEvent.data)
-      event.date = new Date().toLocaleTimeString()
 
       setEvents(prev => {
         const isNew = prev.find((element) => element.id === event.id)
@@ -39,7 +36,7 @@ export default function EventFeed() {
     <div className="h-1/4 w-1/7 border p-2">
       <ul className="h-full overflow-auto flex flex-col justify-end">
         {events.map((event) => {
-          return <li>[{event.date}] Gold +{event.goldReward} Exp +{event.expReward}</li>
+          return <li>[{new Date(event.date * 1000).toLocaleTimeString()}] Gold +{event.gold} Exp +{event.exp}</li>
         })}
       </ul>
     </div>

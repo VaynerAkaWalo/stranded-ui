@@ -8,6 +8,11 @@ interface WrapperProps {
   children: ReactNode
 }
 
+interface GoldChangeEvent {
+  id: string
+  gold: number
+}
+
 export default function GlobalWrapper({ children }: WrapperProps) {
   const [user, setUser] = useState<Identity | null>()
   const [profile, setProfile] = useState<Profile | undefined>()
@@ -21,6 +26,22 @@ export default function GlobalWrapper({ children }: WrapperProps) {
       } catch {
         window.location.replace(authPath() + "/login?target=" + window.location.toString())
       }
+
+      const eventListener = new EventSource("/api/v1/profiles/" + profile?.id + "/events")
+      eventListener.addEventListener("gold-change", (rawEvent: MessageEvent) => {
+        const event: GoldChangeEvent = JSON.parse(rawEvent.data)
+
+        setProfile(prev => {
+          if (!prev) {
+            return undefined
+          }
+
+          return {
+            ...prev,
+            gold: event.gold
+          }
+        })
+      })
     }
 
     const loadProfile = async () => {

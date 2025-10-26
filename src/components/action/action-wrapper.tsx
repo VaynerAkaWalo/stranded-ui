@@ -5,7 +5,9 @@ interface WrapperProps {
   children: ReactNode
 }
 
-const UPDATE_INTERVAL: number = 5
+const UPDATE_STEP: number = 10
+const ACTION_INTERVAL: number = 6000
+const ACTION_UPDATE_INTERVAL_MS: number = ACTION_INTERVAL / (100 / UPDATE_STEP)
 
 export default function ActionWrapper({ children }: WrapperProps) {
   const [progress, setProgress] = useState<number>(0)
@@ -13,10 +15,9 @@ export default function ActionWrapper({ children }: WrapperProps) {
   useEffect(() => {
     const updateTimer = setInterval(() => {
       setProgress((prev) => {
-        const updated = prev + UPDATE_INTERVAL
-        return updated > 100 ? 100 : updated
+        return (prev + UPDATE_STEP) % 101
       })
-    }, 300)
+    }, ACTION_UPDATE_INTERVAL_MS)
 
     return () => {
       clearInterval(updateTimer)

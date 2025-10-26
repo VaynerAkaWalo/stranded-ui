@@ -50,6 +50,10 @@ export default function GlobalWrapper({ children }: WrapperProps) {
   },[]);
 
   useEffect(() => {
+    if (!profile || !profile.id) {
+      return
+    }
+
     const eventListener = new EventSource("/api/v1/profiles/" + profile?.id + "/events")
     eventListener.addEventListener("gold-change", (rawEvent: MessageEvent) => {
       const event: GoldChangeEvent = JSON.parse(rawEvent.data)

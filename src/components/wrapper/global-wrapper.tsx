@@ -27,21 +27,6 @@ export default function GlobalWrapper({ children }: WrapperProps) {
         window.location.replace(authPath() + "/login?target=" + window.location.toString())
       }
 
-      const eventListener = new EventSource("/api/v1/profiles/" + profile?.id + "/events")
-      eventListener.addEventListener("gold-change", (rawEvent: MessageEvent) => {
-        const event: GoldChangeEvent = JSON.parse(rawEvent.data)
-
-        setProfile(prev => {
-          if (!prev) {
-            return undefined
-          }
-
-          return {
-            ...prev,
-            gold: event.gold
-          }
-        })
-      })
     }
 
     const loadProfile = async () => {
@@ -63,6 +48,24 @@ export default function GlobalWrapper({ children }: WrapperProps) {
     })
     keepalive()
   },[]);
+
+  useEffect(() => {
+    const eventListener = new EventSource("/api/v1/profiles/" + profile?.id + "/events")
+    eventListener.addEventListener("gold-change", (rawEvent: MessageEvent) => {
+      const event: GoldChangeEvent = JSON.parse(rawEvent.data)
+
+      setProfile(prev => {
+        if (!prev) {
+          return undefined
+        }
+
+        return {
+          ...prev,
+          gold: event.gold
+        }
+      })
+    })
+  }, [profile]);
 
   const context: GlobalContextInterface = {
     userId: user?.id ?? '',

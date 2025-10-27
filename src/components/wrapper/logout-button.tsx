@@ -1,4 +1,5 @@
 import {Button} from "@mui/material";
+import {Logout} from '@mui/icons-material'
 import {AuthenticationClient} from "@shared/clients/BarricadeClient.ts";
 import {authPath} from "@shared/path-utils.ts";
 
@@ -11,8 +12,9 @@ export default function LogoutButton() {
   }
 
   return (
-    <Button variant="outlined" color="warning" onClick={logout}>
-      Logout
+    <Button className="gap-3" variant="text" onClick={logout}>
+      <p>Logout</p>
+      <Logout/>
     </Button>
   )
 }

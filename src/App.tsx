@@ -11,6 +11,9 @@ import ActionProgress from "@components/action/action-progress.tsx";
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
+    primary: {
+      main: '#FFFFFF'
+    }
   },
 });
 

@@ -3,5 +3,5 @@
 @import "tailwindcss/utilities";
 
 body {
-  @apply bg-neutral-800 text-zinc-300 border-zinc-600
+  @apply bg-neutral-800 text-zinc-300 border-zinc-600;
 }

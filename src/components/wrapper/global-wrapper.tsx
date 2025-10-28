@@ -1,86 +1,93 @@
-import {type ReactNode, useEffect, useState} from "react";
-import {GlobalContext, type GlobalContextInterface} from "@components/wrapper/global-context.tsx";
-import {AuthenticationClient, type Identity} from "@shared/clients/BarricadeClient.ts";
-import {authPath} from "@shared/path-utils.ts";
-import {type Profile, StrandedClient} from "@shared/clients/WilsonClient.ts";
+import { type ReactNode, useEffect, useState } from "react";
+import {
+  GlobalContext,
+  type GlobalContextInterface,
+} from "@components/wrapper/global-context.tsx";
+import {
+  AuthenticationClient,
+  type Identity,
+} from "@shared/clients/BarricadeClient.ts";
+import { authPath } from "@shared/path-utils.ts";
+import { type Profile, StrandedClient } from "@shared/clients/WilsonClient.ts";
 
 interface WrapperProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 interface GoldChangeEvent {
-  id: string
-  gold: number
+  id: string;
+  gold: number;
 }
 
 export default function GlobalWrapper({ children }: WrapperProps) {
-  const [user, setUser] = useState<Identity | null>()
-  const [profile, setProfile] = useState<Profile | undefined>()
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [user, setUser] = useState<Identity | null>();
+  const [profile, setProfile] = useState<Profile | undefined>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const ensureLoggedIn = async () => {
       try {
-        const { data } = await AuthenticationClient.getIdentity()
-        setUser(data)
+        const { data } = await AuthenticationClient.getIdentity();
+        setUser(data);
       } catch {
-        window.location.replace(authPath() + "/login?target=" + window.location.toString())
+        window.location.replace(
+          authPath() + "/login?target=" + window.location.toString(),
+        );
       }
-
-    }
+    };
 
     const loadProfile = async () => {
-      const { data: profiles } = await StrandedClient.GetProfiles()
+      const { data: profiles } = await StrandedClient.GetProfiles();
       if (profiles.length != 0) {
-        setProfile(profiles[0])
+        setProfile(profiles[0]);
       }
-    }
+    };
 
     const keepalive = () => {
       setInterval(() => {
-        ensureLoggedIn()
-      }, 10000)
-    }
+        ensureLoggedIn();
+      }, 10000);
+    };
     ensureLoggedIn().then(() => {
       loadProfile().then(() => {
-        setIsLoading(false)
-      })
-    })
-    keepalive()
-  },[]);
+        setIsLoading(false);
+      });
+    });
+    keepalive();
+  }, []);
 
   useEffect(() => {
     if (!profile || !profile.id) {
-      return
+      return;
     }
 
-    const eventListener = new EventSource("/api/v1/profiles/" + profile?.id + "/events")
+    const eventListener = new EventSource(
+      "/api/v1/profiles/" + profile?.id + "/events",
+    );
     eventListener.addEventListener("gold-change", (rawEvent: MessageEvent) => {
-      const event: GoldChangeEvent = JSON.parse(rawEvent.data)
+      const event: GoldChangeEvent = JSON.parse(rawEvent.data);
 
-      setProfile(prev => {
+      setProfile((prev) => {
         if (!prev) {
-          return undefined
+          return undefined;
         }
 
         return {
           ...prev,
-          gold: event.gold
-        }
-      })
-    })
+          gold: event.gold,
+        };
+      });
+    });
   }, [profile]);
 
   const context: GlobalContextInterface = {
-    userId: user?.id ?? '',
-    username: user?.name ?? '',
+    userId: user?.id ?? "",
+    username: user?.name ?? "",
     profile,
-    isLoading
-  }
+    isLoading,
+  };
 
   return (
-    <GlobalContext.Provider value={context}>
-      {children}
-    </GlobalContext.Provider>
-  )
+    <GlobalContext.Provider value={context}>{children}</GlobalContext.Provider>
+  );
 }

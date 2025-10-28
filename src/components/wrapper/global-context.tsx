@@ -1,11 +1,13 @@
 import * as React from "react";
-import type {Profile} from "@shared/clients/WilsonClient.ts";
+import type { Profile } from "@shared/clients/WilsonClient.ts";
 
 export interface GlobalContextInterface {
-  userId: string
-  username: string
-  profile?: Profile
-  isLoading: boolean
+  userId: string;
+  username: string;
+  profile?: Profile;
+  isLoading: boolean;
 }
 
-export const GlobalContext = React.createContext<GlobalContextInterface>(null as never)
+export const GlobalContext = React.createContext<GlobalContextInterface>(
+  null as never,
+);

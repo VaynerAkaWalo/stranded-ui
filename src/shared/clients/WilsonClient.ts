@@ -1,15 +1,15 @@
-import type {AxiosPromise} from "axios";
-import {HTTPClient} from "@shared/clients/Client.ts";
+import type { AxiosPromise } from "axios";
+import { HTTPClient } from "@shared/clients/Client.ts";
 
 export interface Profile {
-  id: string,
-  name: string,
-  level: number,
-  gold: number
+  id: string;
+  name: string;
+  level: number;
+  gold: number;
 }
 
 export interface CreateProfile {
-  name: string
+  name: string;
 }
 
 class WilsonClient {
@@ -20,13 +20,14 @@ class WilsonClient {
   }
 
   public GetProfiles = async (): Promise<AxiosPromise<Profile[]>> => {
-    return HTTPClient.get(this.baseUrl + "/v1/profiles")
-  }
+    return HTTPClient.get(this.baseUrl + "/v1/profiles");
+  };
 
-  public CreateProfile = async (request: CreateProfile): Promise<AxiosPromise<Profile>> => {
-    return HTTPClient.post(this.baseUrl + "/v1/profiles", request)
-  }
+  public CreateProfile = async (
+    request: CreateProfile,
+  ): Promise<AxiosPromise<Profile>> => {
+    return HTTPClient.post(this.baseUrl + "/v1/profiles", request);
+  };
 }
 
 export const StrandedClient = new WilsonClient();
-

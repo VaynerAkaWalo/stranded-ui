@@ -1,14 +1,13 @@
 import { useContext } from "react";
 import { Footer } from "@components/wrapper/footer.tsx";
-import ProfileView from "@components/profile/profile-view.tsx";
 import LoadingPage from "@components/wrapper/loading-page.tsx";
 import { GlobalContext } from "@components/wrapper/global-context.tsx";
 import CreateProfile from "@components/profile/create-profile.tsx";
 import { createTheme, ThemeProvider } from "@mui/material";
-import EventFeed from "@components/event/event-feed.tsx";
-import ActionProgress from "@components/action/action-progress.tsx";
-import LocationContainer from "@components/location/location-container.tsx";
-import LocationMap from "@components/location/location-map.tsx";
+import HeaderSection from "@components/wrapper/header-section.tsx";
+import ProfileWidget from "@components/widgets/profile/profile-widget.tsx";
+import ActionWidget from "@components/widgets/action/action-widget.tsx";
+import EventFeedWidget from "@components/widgets/event/event-feed-widget.tsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -32,7 +31,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <div className="h-screen">
+      <div className="min-h-screen bg-zinc-900 p-8">
         {isLoading && <LoadingPage />}
         {shouldShowCreateProfile() && <CreateProfile />}
         {shouldShowGame() && <Container />}
@@ -44,12 +43,13 @@ export default function App() {
 
 function Container() {
   return (
-    <div className="h-screen">
-      <ProfileView />
-      <ActionProgress />
-      <LocationContainer />
-      <LocationMap />
-      <EventFeed />
+    <div>
+      <HeaderSection />
+      <div className="widget-container py-10 gap-6 grid grid-cols-4 grid-rows-2">
+        <ProfileWidget />
+        <ActionWidget />
+        <EventFeedWidget eventsToKeep={10} />
+      </div>
     </div>
   );
 }

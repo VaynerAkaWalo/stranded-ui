@@ -23,6 +23,7 @@ export default function GlobalWrapper({ children }: WrapperProps) {
   const [user, setUser] = useState<Identity | null>();
   const [profile, setProfile] = useState<Profile | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [eventSource, setEventSource] = useState<EventSource>();
 
   useEffect(() => {
     const ensureLoggedIn = async () => {
@@ -57,14 +58,21 @@ export default function GlobalWrapper({ children }: WrapperProps) {
   }, []);
 
   useEffect(() => {
-    if (!profile || !profile.id) {
+    if (!profile?.id) {
       return;
     }
 
-    const eventListener = new EventSource(
-      "/api/v1/profiles/" + profile?.id + "/events",
+    setEventSource(
+      new EventSource("/api/v1/profiles/" + profile?.id + "/events"),
     );
-    eventListener.addEventListener("gold-change", (rawEvent: MessageEvent) => {
+  }, [profile?.id]);
+
+  useEffect(() => {
+    if (!eventSource) {
+      return;
+    }
+
+    eventSource.addEventListener("gold-change", (rawEvent: MessageEvent) => {
       const event: GoldChangeEvent = JSON.parse(rawEvent.data);
 
       setProfile((prev) => {
@@ -78,13 +86,16 @@ export default function GlobalWrapper({ children }: WrapperProps) {
         };
       });
     });
-  }, [profile]);
+
+    return () => eventSource.close();
+  }, [eventSource]);
 
   const context: GlobalContextInterface = {
     userId: user?.id ?? "",
     username: user?.name ?? "",
     profile,
     isLoading,
+    eventSource,
   };
 
   return (

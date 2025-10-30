@@ -13,8 +13,8 @@ export default function LogoutButton() {
   };
 
   return (
-    <Button className="gap-3" variant="text" onClick={logout}>
-      <p>Logout</p>
+    <Button className="gap-3 ml-auto" variant="text" onClick={logout}>
+      <p className="">Logout</p>
       <Logout />
     </Button>
   );

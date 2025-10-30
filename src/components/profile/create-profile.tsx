@@ -27,7 +27,7 @@ export default function CreateProfile() {
   };
 
   return (
-    <div className="flex justify-center items-center h-full">
+    <div className="h-screen flex justify-center items-center">
       <div className="h-1/3 w-1/3 border-2 flex flex-col items-center justify-evenly">
         <TextField label="Type your name" value={name} onChange={updateName} />
         <Button variant="contained" onClick={createProfile}>

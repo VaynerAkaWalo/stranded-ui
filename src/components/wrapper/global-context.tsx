@@ -6,6 +6,7 @@ export interface GlobalContextInterface {
   username: string;
   profile?: Profile;
   isLoading: boolean;
+  eventSource?: EventSource;
 }
 
 export const GlobalContext = React.createContext<GlobalContextInterface>(

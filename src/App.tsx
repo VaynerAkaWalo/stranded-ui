@@ -45,10 +45,10 @@ function Container() {
   return (
     <div className="flex-grow flex flex-col">
       <HeaderSection />
-      <div className="h-full flex-grow py-10 gap-6 grid grid-cols-4 grid-rows-5">
+      <div className="h-full flex-grow py-10 gap-6 grid grid-cols-4 grid-rows-4">
         <ProfileWidget />
         <ActionWidget />
-        <EventFeedWidget eventsToKeep={10} />
+        <EventFeedWidget eventsToKeep={13} />
       </div>
     </div>
   );

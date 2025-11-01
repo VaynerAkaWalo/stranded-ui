@@ -31,7 +31,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <div className="min-h-screen bg-zinc-900 p-8">
+      <div className="min-h-screen flex flex-col bg-zinc-900 p-8">
         {isLoading && <LoadingPage />}
         {shouldShowCreateProfile() && <CreateProfile />}
         {shouldShowGame() && <Container />}
@@ -43,9 +43,9 @@ export default function App() {
 
 function Container() {
   return (
-    <div>
+    <div className="flex-grow flex flex-col">
       <HeaderSection />
-      <div className="widget-container py-10 gap-6 grid grid-cols-4 grid-rows-2">
+      <div className="h-full flex-grow py-10 gap-6 grid grid-cols-4 grid-rows-5">
         <ProfileWidget />
         <ActionWidget />
         <EventFeedWidget eventsToKeep={10} />

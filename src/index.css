@@ -2,6 +2,10 @@
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
 
+@source inline('{row-span-{1,2,3,4,5,6,7,8,9,10,11,12}');
+@source inline('{col-span-{1,2,3,4,5,6,7,8,9,10,11,12}');
+
+
 @layer base {
   * {
     @apply text-zinc-300 border-zinc-700;
